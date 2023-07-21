@@ -11,6 +11,8 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final List<Product> cartItems = cartProvider.cartItems;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -19,9 +21,10 @@ class CartScreen extends StatelessWidget {
           style: const TextTheme().headlineLarge,
         ),
       ),
-      body: Selector<CartProvider, List<Product>>(
-        selector: (context, cartProvider) => cartProvider.cartItems,
-        builder: (context, cartItems, child) {
+      body: Consumer<CartProvider>(
+       builder: (context, cartProvider, child) {
+          final cartItems = cartProvider.cartItems;
+
           return ListView.builder(
             itemCount: cartItems.length,
             itemBuilder: (context, index) {
