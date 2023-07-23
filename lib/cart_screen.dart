@@ -35,7 +35,10 @@ class CartScreen extends StatelessWidget {
       body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
           final cartItems = cartProvider.cartItems;
-
+          if (cartItems.isEmpty)
+            return Center(
+              child: Text('Your C A R T is empty.'),
+            );
           return ListView.builder(
             itemCount: cartItems.length,
             itemBuilder: (context, index) {
@@ -75,27 +78,32 @@ class CartScreen extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: Selector<CartProvider, double>(
-        selector: (context, cartProvider) => cartProvider.totalPrice,
-        builder: (context, totalPrice, child) => Container(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            'Total Price: \$${totalPrice.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: () {
-          final cartProvider =
-              Provider.of<CartProvider>(context, listen: false);
-          cartProvider.clearCart();
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('C A R T cleared')));
-        },
-        child: const Icon(Icons.clear),
-      ),
+      bottomNavigationBar: cartItems.isNotEmpty
+          ? Selector<CartProvider, double>(
+              selector: (context, cartProvider) => cartProvider.totalPrice,
+              builder: (context, totalPrice, child) => Container(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'Total Price: \$${totalPrice.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          : null,
+      floatingActionButton: cartItems.isNotEmpty
+          ? FloatingActionButton.large(
+              onPressed: () {
+                final cartProvider =
+                    Provider.of<CartProvider>(context, listen: false);
+                cartProvider.clearCart();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('C A R T cleared')));
+              },
+              child: const Icon(Icons.clear),
+            )
+          : null,
     );
   }
 }

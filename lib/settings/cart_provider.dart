@@ -105,4 +105,14 @@ class CartProvider extends ChangeNotifier {
     saveCartItems();
     notifyListeners();
   }
+
+  void updateProduct(Product updatedProduct) {
+    final index =
+        _cartItems.indexWhere((product) => product.name == updatedProduct.name);
+    if (index != -1) {
+      _cartItems[index] = updatedProduct;
+      saveCartItems();
+      notifyListeners();
+    }
+  }
 }

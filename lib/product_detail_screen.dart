@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice17/pages/edit_product_screen.dart';
 import 'package:practice17/product_model.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -75,8 +76,8 @@ class ProductDetailScreen extends StatelessWidget {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:
-                        Text('All items of this product removed from cart'),
+                    content: const Text(
+                        'All items of this product removed from cart'),
                     action: SnackBarAction(
                       label: 'Undo',
                       onPressed: () => cartProvider.undoRemove(),
@@ -85,6 +86,18 @@ class ProductDetailScreen extends StatelessWidget {
                 );
               },
               child: const Text('Remove All Items of this Product'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProductScreen(product: product),
+                  ),
+                );
+              },
+              child: Text('Edit Product Details'),
             ),
           ],
         ),
