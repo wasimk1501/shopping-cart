@@ -20,9 +20,20 @@ class CartScreen extends StatelessWidget {
           'C A R T',
           style: const TextTheme().headlineLarge,
         ),
+        actions: [
+          IconButton(
+            tooltip: 'Sort By Name',
+            onPressed: () => cartProvider.sortCartByName(),
+            icon: Icon(Icons.sort_by_alpha_rounded),
+          ),
+          IconButton(
+              tooltip: 'Sort By Price',
+              onPressed: () => cartProvider.sortCartByPrice(),
+              icon: Icon(Icons.sort_rounded))
+        ],
       ),
       body: Consumer<CartProvider>(
-       builder: (context, cartProvider, child) {
+        builder: (context, cartProvider, child) {
           final cartItems = cartProvider.cartItems;
 
           return ListView.builder(
@@ -31,11 +42,33 @@ class CartScreen extends StatelessWidget {
               final product = cartItems[index];
               log('Product: ${product.toJson()}');
               log('List index: $index');
-              return ListTile(
-                title: Text(product.name),
-                subtitle: Text('\$${product.price.toStringAsFixed(1)}'),
-                trailing: CartQuantityControl(
-                  index: index,
+              return Dismissible(
+                key: ValueKey(product.name),
+                background: Container(color: Colors.red),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  cartProvider.removeCartItem(index);
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('${product.name} removed from the cart'),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () => cartProvider.undoRemove(),
+                    ),
+                  ));
+                },
+                child: ListTile(
+                  title: Text(product.name),
+                  subtitle: Text('\$${product.price.toStringAsFixed(1)}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CartQuantityControl(index: index),
+                      IconButton(
+                          onPressed: () => cartProvider.removeCartItem(index),
+                          icon: Icon(Icons.delete))
+                    ],
+                  ),
                 ),
               );
             },
