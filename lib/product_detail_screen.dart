@@ -99,6 +99,22 @@ class ProductDetailScreen extends StatelessWidget {
               },
               child: Text('Edit Product Details'),
             ),
+            const SizedBox(height: 16),
+            Consumer<CartProvider>(
+              builder: (context, value, child) {
+                final prod = value.getProductByName(product.name);
+                return ElevatedButton(
+                  onPressed: () {
+                    value.toggleFavorite(prod);
+                  },
+                  child: Text(
+                    prod.isFavorite ?? false
+                        ? 'Remove from Favorites'
+                        : 'Add to Favorites',
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

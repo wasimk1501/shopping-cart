@@ -115,4 +115,27 @@ class CartProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+//Mark a  product as a favorite
+  void toggleFavorite(Product product) {
+    final index = _cartItems.indexWhere((prod) => prod.name == product.name);
+
+    if (index != -1) {
+      if (_cartItems[index].isFavorite == null)
+        _cartItems[index].isFavorite = false;
+      _cartItems[index].isFavorite = !_cartItems[index].isFavorite!;
+      saveCartItems();
+      notifyListeners();
+    }
+  }
+
+  //Get the list of favorite products
+  List<Product> getFavoriteProducts() {
+    return _cartItems.where((product) => product.isFavorite ?? false).toList();
+  }
+
+  Product getProductByName(String name) {
+    return _cartItems.firstWhere((product) => product.name == name,
+        orElse: () => Product(name: '', price: 0.0, quantity: 0));
+  }
 }
