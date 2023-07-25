@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:practice17/product_list_screen.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:practice17/cart_screen.dart';
+import 'package:practice17/settings/category_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -20,10 +21,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: cartProvider,
-      // create: (context) => CartProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: cartProvider,
+        ),
+        ChangeNotifierProxyProvider<CategoryProvider, CartProvider>(
+          create: (_) => CartProvider(),
+          update: (_, categoryProvider, productProvider) {
+            return productProvider
+              ..setCategories(categoryProvider.categories); //TODO
+          },
+        ),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
         title: 'Shopping App',
         initialRoute: '/',

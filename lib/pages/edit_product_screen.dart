@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice17/product_model.dart';
+import 'package:practice17/models/product_model.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +65,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     final updatedProduct = Product(
                         name: newName,
                         price: newPrice,
-                        quantity: widget.product.quantity);
+                        quantity: widget.product.quantity,
+                        category: widget.product.category);
                     Provider.of<CartProvider>(context, listen: false)
                         .updateProduct(updatedProduct);
                     Navigator.pop(context);

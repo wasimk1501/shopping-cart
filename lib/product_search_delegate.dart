@@ -7,6 +7,23 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
   ProductSearchDelegate(this.products);
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      primaryColor: Colors.transparent, // Transparent search bar background
+      textTheme: TextTheme(
+        headline6: TextStyle(
+            color: Colors.white, // Customize the search bar text color
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.grey),
+        border: InputBorder.none,
+      ),
+    );
+  }
+
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(onPressed: () => query = '', icon: const Icon(Icons.clear))
@@ -15,7 +32,10 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return null;
+    return IconButton(
+      onPressed: () => Navigator.pop(context),
+      icon: Icon(Icons.arrow_back, color: Colors.white), // Back icon color
+    );
   }
 
   @override
@@ -28,16 +48,35 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
       itemCount: result.length,
       itemBuilder: (context, index) {
         final product = result[index];
-        return ListTile(
-          title: Text(product.name),
-          subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-          trailing: ElevatedButton(
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProductDetailScreen(product: product))),
-            child: Text('Details'),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Card(
+            elevation: 4,
+            child: ListTile(
+              title: Text(
+                product.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                '\$${product.price.toStringAsFixed(2)}',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+              trailing: ElevatedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailScreen(product: product),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
+                child: Text(
+                  'Details',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -59,11 +98,18 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
           subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
           trailing: ElevatedButton(
             onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProductDetailScreen(product: product))),
-            child: Text('Details'),
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailScreen(product: product),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Theme.of(context).primaryColor,
+            ),
+            child: Text(
+              'Details',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         );
       },

@@ -123,7 +123,7 @@ class CartProvider extends ChangeNotifier {
     if (index != -1) {
       if (_cartItems[index].isFavorite == null)
         _cartItems[index].isFavorite = false;
-      _cartItems[index].isFavorite = !_cartItems[index].isFavorite!;
+      _cartItems[index].isFavorite = !(_cartItems[index].isFavorite ?? false);
       saveCartItems();
       notifyListeners();
     }

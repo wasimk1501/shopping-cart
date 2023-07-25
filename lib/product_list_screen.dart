@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:practice17/product_detail_screen.dart';
-import 'package:practice17/product_model.dart';
+import 'package:practice17/models/product_model.dart';
 import 'package:practice17/product_search_delegate.dart';
 import 'package:practice17/settings/cart_provider.dart';
+import 'package:practice17/settings/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -12,15 +13,24 @@ class ProductListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    final List<Product> products = [
-      Product(name: 'Product 1', price: 10.0),
-      Product(name: 'Product 2', price: 15.0),
-      Product(name: 'Product 3', price: 20.0),
-    ];
+    final List<Product> products =
+        Provider.of<ProductProvider>(context, listen: false).products;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Products'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.blue,
+                Colors.purple
+              ], // Customize the gradient colors
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () async {
@@ -31,26 +41,26 @@ class ProductListScreen extends StatelessWidget {
               if (!context.mounted) return;
               searchNavigator(context, selectedProduct);
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
           Stack(
             children: [
               IconButton(
                 onPressed: () => Navigator.pushNamed(context, '/cart'),
-                icon: Icon(Icons.shopping_cart),
+                icon: const Icon(Icons.shopping_cart),
               ),
               Positioned(
                 right: 0,
                 child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
                   child: Consumer<CartProvider>(
                     builder: (context, value, child) => Text(
                       value.cartItems.length.toString(),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -60,7 +70,7 @@ class ProductListScreen extends StatelessWidget {
         ],
       ),
       body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
@@ -85,7 +95,7 @@ class ProductListScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Hero(
-                    tag: 'product_image_$index',
+                    tag: 'product_image_${product.name}',
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: Image.asset(
@@ -97,7 +107,7 @@ class ProductListScreen extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -112,27 +122,35 @@ class ProductListScreen extends StatelessWidget {
                     right: 8,
                     child: Row(
                       children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              // Handle favorite button tap
-                            },
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
+                        Consumer<CartProvider>(
+                          builder: (context, value, child) {
+                            final prod = value.getProductByName(product.name);
+                            return Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  // Handle favorite button tap
+                                  value.toggleFavorite(product);
+                                },
+                                borderRadius: BorderRadius.circular(16),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Icon(
+                                    prod.isFavorite ?? false
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: Colors.red,
+                                  ),
+                                ),
                               ),
-                              child: Icon(
-                                Icons.favorite_border,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Material(
                           color: Colors.transparent,
                           child: InkWell(
@@ -150,13 +168,13 @@ class ProductListScreen extends StatelessWidget {
                             },
                             borderRadius: BorderRadius.circular(16),
                             child: Container(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors
                                     .primaries[index % Colors.primaries.length],
                               ),
-                              child: Icon(Icons.add_shopping_cart,
+                              child: const Icon(Icons.add_shopping_cart,
                                   color: Colors.white),
                             ),
                           ),
@@ -167,10 +185,10 @@ class ProductListScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(16),
                           bottomRight: Radius.circular(16),
                         ),
@@ -189,7 +207,7 @@ class ProductListScreen extends StatelessWidget {
                         children: [
                           Text(
                             product.name,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -197,15 +215,15 @@ class ProductListScreen extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             '\$${product.price.toStringAsFixed(2)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           GestureDetector(
                             onTap: () {
                               // Handle buy now button tap
@@ -224,11 +242,11 @@ class ProductListScreen extends StatelessWidget {
                                         .withOpacity(0.3),
                                     spreadRadius: 2,
                                     blurRadius: 6,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   'Buy Now',
                                   style: TextStyle(
