@@ -26,13 +26,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: cartProvider,
         ),
-        ChangeNotifierProxyProvider<CategoryProvider, CartProvider>(
-          create: (_) => CartProvider(),
-          update: (_, categoryProvider, productProvider) {
-            return productProvider
-              ..setCategories(categoryProvider.categories); //TODO
-          },
-        ),
+        // ChangeNotifierProxyProvider<CategoryProvider, CartProvider>(
+        //   create: (_) => CartProvider(),
+        //   update: (_, categoryProvider, productProvider) {
+        //     return productProvider
+        //       ..setCategories(categoryProvider.categories); //TODO
+        //   },
+        // ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

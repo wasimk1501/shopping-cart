@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:practice17/product_model.dart';
+import 'package:practice17/models/product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider extends ChangeNotifier {
@@ -135,7 +135,9 @@ class CartProvider extends ChangeNotifier {
   }
 
   Product getProductByName(String name) {
-    return _cartItems.firstWhere((product) => product.name == name,
-        orElse: () => Product(name: '', price: 0.0, quantity: 0));
+    return _cartItems.firstWhere(
+      (product) => product.name == name,
+    );
+    // orElse: () => Product(name: '', price: 0.0, quantity: 0,category: ));
   }
 }

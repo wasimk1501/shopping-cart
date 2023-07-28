@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice17/pages/edit_product_screen.dart';
-import 'package:practice17/product_model.dart';
+import 'package:practice17/models/product_model.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';

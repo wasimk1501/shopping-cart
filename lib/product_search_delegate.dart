@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice17/product_detail_screen.dart';
-import 'package:practice17/product_model.dart';
+import 'package:practice17/models/product_model.dart';
 
 class ProductSearchDelegate extends SearchDelegate<Product> {
   final List<Product> products;
@@ -10,13 +10,13 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
   ThemeData appBarTheme(BuildContext context) {
     return Theme.of(context).copyWith(
       primaryColor: Colors.transparent, // Transparent search bar background
-      textTheme: TextTheme(
-        headline6: TextStyle(
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(
             color: Colors.white, // Customize the search bar text color
             fontSize: 20.0,
             fontWeight: FontWeight.bold),
       ),
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey),
         border: InputBorder.none,
       ),
@@ -34,7 +34,8 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
       onPressed: () => Navigator.pop(context),
-      icon: Icon(Icons.arrow_back, color: Colors.white), // Back icon color
+      icon:
+          const Icon(Icons.arrow_back, color: Colors.white), // Back icon color
     );
   }
 
@@ -55,7 +56,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
             child: ListTile(
               title: Text(
                 product.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 '\$${product.price.toStringAsFixed(2)}',
@@ -71,7 +72,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
                 style: ElevatedButton.styleFrom(
                   primary: Theme.of(context).primaryColor,
                 ),
-                child: Text(
+                child: const Text(
                   'Details',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -106,7 +107,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
             style: ElevatedButton.styleFrom(
               primary: Theme.of(context).primaryColor,
             ),
-            child: Text(
+            child: const Text(
               'Details',
               style: TextStyle(color: Colors.white),
             ),
