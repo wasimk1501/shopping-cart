@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
+        // theme: ThemeData.dark(),
         title: 'Shopping App',
         initialRoute: '/',
         routes: {

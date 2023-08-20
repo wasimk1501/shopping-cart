@@ -36,8 +36,9 @@ class CartProvider extends ChangeNotifier {
   }
 
   void addToCart(Product product) {
-    final existingProduct = _cartItems
-        .firstWhere((item) => item.name == product.name, orElse: () => product);
+    final existingProduct = _cartItems.firstWhere(
+        (item) => item.title == product.title,
+        orElse: () => product);
     if (_cartItems.contains(existingProduct)) {
       increaseQuantity(_cartItems.indexOf(existingProduct));
     } else {
@@ -77,8 +78,8 @@ class CartProvider extends ChangeNotifier {
 
   void removeAllItemsOfProduct(Product product) {
     _removedItem =
-        _cartItems.firstWhereOrNull((item) => item.name == product.name);
-    _cartItems.removeWhere((element) => element.name == product.name);
+        _cartItems.firstWhereOrNull((item) => item.title == product.title);
+    _cartItems.removeWhere((element) => element.title == product.title);
 
     saveCartItems();
     notifyListeners();
@@ -94,8 +95,8 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void sortCartByName() {
-    _cartItems.sort((a, b) => a.name.compareTo(b.name));
+  void sortCartByTitle() {
+    _cartItems.sort((a, b) => a.title.compareTo(b.title));
     saveCartItems();
     notifyListeners();
   }
@@ -107,8 +108,8 @@ class CartProvider extends ChangeNotifier {
   }
 
   void updateProduct(Product updatedProduct) {
-    final index =
-        _cartItems.indexWhere((product) => product.name == updatedProduct.name);
+    final index = _cartItems
+        .indexWhere((product) => product.title == updatedProduct.title);
     if (index != -1) {
       _cartItems[index] = updatedProduct;
       saveCartItems();
@@ -118,7 +119,7 @@ class CartProvider extends ChangeNotifier {
 
 //Mark a  product as a favorite
   void toggleFavorite(Product product) {
-    final index = _cartItems.indexWhere((prod) => prod.name == product.name);
+    final index = _cartItems.indexWhere((prod) => prod.title == product.title);
 
     if (index != -1) {
       if (_cartItems[index].isFavorite == null)
@@ -134,10 +135,10 @@ class CartProvider extends ChangeNotifier {
     return _cartItems.where((product) => product.isFavorite ?? false).toList();
   }
 
-  Product getProductByName(String name) {
+  Product getProductByTitle(String title) {
     return _cartItems.firstWhere(
-      (product) => product.name == name,
+      (product) => product.title == title,
     );
-    // orElse: () => Product(name: '', price: 0.0, quantity: 0,category: ));
+    // orElse: () => Product(Title: '', price: 0.0, quantity: 0,category: ));
   }
 }

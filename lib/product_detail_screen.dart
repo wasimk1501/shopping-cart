@@ -4,7 +4,6 @@ import 'package:practice17/models/product_model.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:practice17/settings/product_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:collection/collection.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen({super.key, required this.product});
@@ -17,12 +16,12 @@ class ProductDetailScreen extends StatelessWidget {
     final cartItemsCount = cartProvider.cartItems.length;
     final removedItem = cartProvider.removedItem;
     final isFavorite =
-        productProvider.getProductByName(product.name)?.isFavorite ?? false;
+        productProvider.getProductByTitle(product.title)?.isFavorite ?? false;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          product.name,
+          product.title,
           style:
               TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold),
         ),
@@ -69,12 +68,12 @@ class ProductDetailScreen extends StatelessWidget {
               alignment: Alignment.topRight,
               children: [
                 Hero(
-                  tag: 'product_image_${product.name}',
+                  tag: 'product_image_${product.title}',
                   child: Container(
                     height: 250,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/shopping-cart.png"),
+                        image: NetworkImage("${product.image}"),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.only(
@@ -128,9 +127,7 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                    'Nulla ultrices vestibulum convallis. Proin ullamcorper '
-                    'facilisis urna, id consequat dolor vulputate vitae.',
+                    product.description,
                     style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Montserrat',
@@ -146,7 +143,7 @@ class ProductDetailScreen extends StatelessWidget {
                             cartProvider.addToCart(product);
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('🥳 ${product.name} added to 🛒'),
+                              content: Text('🥳 ${product.title} added to 🛒'),
                               duration: Duration(seconds: 2),
                               action: SnackBarAction(
                                 label: 'View Cart',

@@ -26,7 +26,14 @@ class ProductListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Products'),
+        title: const Text(
+          'SHOPPY',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -104,11 +111,11 @@ class ProductListScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Hero(
-                    tag: 'product_image_${product.name}',
+                    tag: 'product_image_${product.title}',
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/shopping-cart.png', // Replace with actual product image
+                      child: Image.network(
+                        '${product.image}', // Replace with actual product image
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -133,7 +140,7 @@ class ProductListScreen extends StatelessWidget {
                       children: [
                         Consumer<ProductProvider>(
                           builder: (context, value, child) {
-                            final prod = value.getProductByName(product.name);
+                            final prod = value.getProductByTitle(product.title);
 
                             return Material(
                               color: Colors.transparent,
@@ -216,7 +223,7 @@ class ProductListScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            product.name,
+                            product.title,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -234,40 +241,40 @@ class ProductListScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: () {
-                              // Handle buy now button tap
-                            },
-                            child: Container(
-                              height: 50,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors
-                                    .primaries[index % Colors.primaries.length],
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.primaries[
-                                            index % Colors.primaries.length]
-                                        .withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'Buy Now',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     // Handle buy now button tap
+                          //   },
+                          //   child: Container(
+                          //     height: 50,
+                          //     width: double.infinity,
+                          //     decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(25),
+                          //       color: Colors
+                          //           .primaries[index % Colors.primaries.length],
+                          //       boxShadow: [
+                          //         BoxShadow(
+                          //           color: Colors.primaries[
+                          //                   index % Colors.primaries.length]
+                          //               .withOpacity(0.3),
+                          //           spreadRadius: 2,
+                          //           blurRadius: 6,
+                          //           offset: const Offset(0, 3),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //     child: const Center(
+                          //       child: Text(
+                          //         'Buy Now',
+                          //         style: TextStyle(
+                          //           color: Colors.white,
+                          //           fontSize: 18,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

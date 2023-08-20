@@ -43,7 +43,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
   Widget buildResults(BuildContext context) {
     final result = products
         .where((product) =>
-            product.name.toLowerCase().contains(query.toLowerCase()))
+            product.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return ListView.builder(
       itemCount: result.length,
@@ -55,7 +55,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
             elevation: 4,
             child: ListTile(
               title: Text(
-                product.name,
+                product.title,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
@@ -88,14 +88,14 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
   Widget buildSuggestions(BuildContext context) {
     final result = products
         .where((product) =>
-            product.name.toLowerCase().contains(query.toLowerCase()))
+            product.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return ListView.builder(
       itemCount: result.length,
       itemBuilder: (context, index) {
         final product = result[index];
         return ListTile(
-          title: Text(product.name),
+          title: Text(product.title),
           subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
           trailing: ElevatedButton(
             onPressed: () => Navigator.push(

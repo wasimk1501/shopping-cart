@@ -1,30 +1,98 @@
-import 'package:practice17/models/category_model.dart';
+// To parse this JSON data, do
+//
+//     final product = productFromJson(jsonString);
+
+import 'dart:convert';
+
+List<Product> productFromJson(String str) =>
+    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+
+String productToJson(List<Product> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Product {
-  final String name;
-  final double price;
+  int id;
+  String title;
+  double price;
+  String description;
+  Category category;
+  String image;
+  // String name;
+  Rating rating;
   int quantity;
   bool? isFavorite;
-  // Category category;
+
   Product({
-    required this.name,
+    required this.id,
+    required this.title,
     required this.price,
+    required this.description,
+    required this.category,
+    required this.image,
+    required this.rating,
     this.quantity = 1,
     this.isFavorite = false,
-    // required this.category
   });
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        name: json['name'],
-        price: json['price'],
-        quantity: json['quantity'],
-        isFavorite: json['isFavorite'] ?? false,
-        // category: json['category'] ?? ''
+
+  factory Product.fromJson(Map<dynamic, dynamic> json) => Product(
+        id: json["id"],
+        title: json["title"],
+        price: json["price"]?.toDouble(),
+        description: json["description"],
+        // name:
+        category: categoryValues.map[json["category"]]!,
+        image: json["image"],
+        rating: Rating.fromJson(json["rating"]),
       );
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'price': price,
-        'quantity': quantity,
-        'isFavorite': isFavorite,
-        // 'category': category
+
+  Map<dynamic, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "price": price,
+        "description": description,
+        "category": categoryValues.reverse[category],
+        "image": image,
+        "rating": rating.toJson(),
       };
+}
+
+enum Category { ELECTRONICS, JEWELERY, MEN_S_CLOTHING, WOMEN_S_CLOTHING }
+
+final categoryValues = EnumValues({
+  "electronics": Category.ELECTRONICS,
+  "jewelery": Category.JEWELERY,
+  "men's clothing": Category.MEN_S_CLOTHING,
+  "women's clothing": Category.WOMEN_S_CLOTHING
+});
+
+class Rating {
+  double rate;
+  int count;
+
+  Rating({
+    required this.rate,
+    required this.count,
+  });
+
+  factory Rating.fromJson(Map<dynamic, dynamic> json) => Rating(
+        rate: json["rate"]?.toDouble(),
+        count: json["count"],
+      );
+
+  Map<dynamic, dynamic> toJson() => {
+        "rate": rate,
+        "count": count,
+      };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

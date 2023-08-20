@@ -26,8 +26,8 @@ class CartScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            tooltip: 'Sort By Name',
-            onPressed: () => cartProvider.sortCartByName(),
+            tooltip: 'Sort By Title',
+            onPressed: () => cartProvider.sortCartByTitle(),
             icon: Icon(Icons.sort_by_alpha_rounded),
           ),
           IconButton(
@@ -63,14 +63,14 @@ class CartScreen extends StatelessWidget {
                 log('Product: ${product.toJson()}');
                 log('List index: $index');
                 return Dismissible(
-                  key: ValueKey(product.name),
+                  key: ValueKey(product.title),
                   background: Container(color: Colors.red),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     cartProvider.removeCartItem(index);
                     ScaffoldMessenger.of(context).removeCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('${product.name} removed from the cart'),
+                      content: Text('${product.title} removed from the cart'),
                       action: SnackBarAction(
                         label: 'Undo',
                         onPressed: () => cartProvider.undoRemove(),
@@ -124,37 +124,39 @@ class CartScreen extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        final cartProvider =
-                            Provider.of<CartProvider>(context, listen: false);
-                        cartProvider.clearCart();
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('CART cleared')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8.0,
-                        ),
-                        child: Text(
-                          'Clear Cart',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                        onPressed: () {
+                          final cartProvider =
+                              Provider.of<CartProvider>(context, listen: false);
+                          cartProvider.clearCart();
+                          ScaffoldMessenger.of(context).clearSnackBars();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('CART cleared')),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                      ),
-                    ),
+                        child: Icon(Icons.clear)
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 16.0,
+                        //     vertical: 8.0,
+                        //   ),
+                        //   child: Text(
+                        //     'Clear Cart',
+                        //     style: TextStyle(
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.blue,
+                        //     ),
+                        //   ),
+                        // ),
+
+                        ),
                   ],
                 ),
               ),
@@ -240,8 +242,9 @@ class _AnimatedCardState extends State<AnimatedCard>
             borderRadius: BorderRadius.circular(12),
           ),
           child: ListTile(
+            leading: Image.network(widget.product.image),
             title: Text(
-              widget.product.name,
+              widget.product.title,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text('\$${widget.product.price.toStringAsFixed(1)}'),

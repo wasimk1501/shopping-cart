@@ -18,7 +18,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.product.name);
+    _nameController = TextEditingController(text: widget.product.title);
     _priceController =
         TextEditingController(text: widget.product.price.toString());
   }
@@ -63,9 +63,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       double.tryParse(_priceController.text) ?? 0.0;
                   if (newName.isNotEmpty && newPrice > 0) {
                     final updatedProduct = Product(
-                      name: newName,
+                      // name: newName,
                       price: newPrice,
                       quantity: widget.product.quantity,
+                      category: widget.product.category,
+                      image: widget.product.image,
+                      title: widget.product.title,
+                      id: widget.product.id,
+                      description: widget.product.description,
+                      rating: widget.product.rating,
+
                       // category: widget.product.category,
                     );
                     Provider.of<CartProvider>(context, listen: false)
