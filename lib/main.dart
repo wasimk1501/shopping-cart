@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:practice17/product_list_screen.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:practice17/cart_screen.dart';
-import 'package:practice17/settings/category_provider.dart';
+import 'package:practice17/settings/product_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: cartProvider,
         ),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        // ChangeNotifierProvider.value(value: ProductProvider()),
+
         // ChangeNotifierProxyProvider<CategoryProvider, CartProvider>(
         //   create: (_) => CartProvider(),
         //   update: (_, categoryProvider, productProvider) {

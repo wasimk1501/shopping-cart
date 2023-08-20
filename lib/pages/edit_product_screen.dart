@@ -63,10 +63,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       double.tryParse(_priceController.text) ?? 0.0;
                   if (newName.isNotEmpty && newPrice > 0) {
                     final updatedProduct = Product(
-                        name: newName,
-                        price: newPrice,
-                        quantity: widget.product.quantity,
-                        category: widget.product.category);
+                      name: newName,
+                      price: newPrice,
+                      quantity: widget.product.quantity,
+                      // category: widget.product.category,
+                    );
                     Provider.of<CartProvider>(context, listen: false)
                         .updateProduct(updatedProduct);
                     Navigator.pop(context);

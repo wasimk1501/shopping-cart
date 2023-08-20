@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:practice17/product_detail_screen.dart';
@@ -5,6 +7,7 @@ import 'package:practice17/models/product_model.dart';
 import 'package:practice17/product_search_delegate.dart';
 import 'package:practice17/settings/cart_provider.dart';
 import 'package:practice17/settings/product_provider.dart';
+// import 'package:practice17/settings/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -14,6 +17,11 @@ class ProductListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
     final List<Product> products =
+        // [
+        //   Product(name: 'Product 1', price: 10.0),
+        //   Product(name: 'Product 2', price: 15.0),
+        //   Product(name: 'Product 3', price: 20.0),
+        // ];
         Provider.of<ProductProvider>(context, listen: false).products;
 
     return Scaffold(
@@ -79,6 +87,7 @@ class ProductListScreen extends StatelessWidget {
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
+
           return InkWell(
             onTap: () => Navigator.push(
               context,
@@ -122,15 +131,16 @@ class ProductListScreen extends StatelessWidget {
                     right: 8,
                     child: Row(
                       children: [
-                        Consumer<CartProvider>(
+                        Consumer<ProductProvider>(
                           builder: (context, value, child) {
                             final prod = value.getProductByName(product.name);
+
                             return Material(
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
                                   // Handle favorite button tap
-                                  value.toggleFavorite(product);
+                                  value.toggleFavorite(prod);
                                 },
                                 borderRadius: BorderRadius.circular(16),
                                 child: Container(

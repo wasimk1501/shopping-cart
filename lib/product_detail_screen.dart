@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice17/pages/edit_product_screen.dart';
 import 'package:practice17/models/product_model.dart';
 import 'package:practice17/settings/cart_provider.dart';
+import 'package:practice17/settings/product_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 
@@ -12,10 +13,11 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
     final cartItemsCount = cartProvider.cartItems.length;
     final removedItem = cartProvider.removedItem;
     final isFavorite =
-        cartProvider.getProductByName(product.name)?.isFavorite ?? false;
+        productProvider.getProductByName(product.name)?.isFavorite ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +93,7 @@ class ProductDetailScreen extends StatelessWidget {
                     child: GestureDetector(
                       key: ValueKey<bool>(isFavorite),
                       onTap: () {
-                        cartProvider.toggleFavorite(product);
+                        productProvider.toggleFavorite(product);
                       },
                       child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
